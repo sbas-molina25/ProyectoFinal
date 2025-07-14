@@ -11,6 +11,6 @@ package com.epn.practice.proyectofinal;
 public class Estudiante {
     
     
-    
+    private String nombre;
     
 }
