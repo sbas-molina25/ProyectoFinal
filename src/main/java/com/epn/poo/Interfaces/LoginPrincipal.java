@@ -95,8 +95,9 @@ public class LoginPrincipal extends javax.swing.JFrame {
     private void jBLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBLoginActionPerformed
         try {
             // TODO add your handling code here:
-            String usuario = jTUsuario.getText().substring(0, 3).toUpperCase();
-            switch (usuario) {
+            String usuarioVerificar = jTUsuario.getText().substring(0, 3).toUpperCase();
+            String userCompleto = jTUsuario.getText();
+            switch (usuarioVerificar) {
                 case "ADM":
                     Admin ventanaAdmin = new Admin(this, true);
                     ventanaAdmin.setLocationRelativeTo(null);
@@ -106,7 +107,7 @@ public class LoginPrincipal extends javax.swing.JFrame {
                     this.listaCursos = ventanaAdmin.getListaCursoCreado();
                     break;
                 case "EST":
-                    EstudianteInterfaz ventanaEstudiante = new EstudianteInterfaz(this, listaEstudiante, listaProfesores, listaCursos, true);
+                    EstudianteInterfaz ventanaEstudiante = new EstudianteInterfaz(this, userCompleto, true);
                     ventanaEstudiante.setLocationRelativeTo(null);
                     ventanaEstudiante.setVisible(true);
                     break;

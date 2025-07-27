@@ -5,31 +5,106 @@
 package com.epn.poo.Interfaces;
 
 import com.epn.poo.ClasesAdministracionColegio.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Sebas
  */
 public class EstudianteInterfaz extends javax.swing.JDialog {
-    
-    ArrayList<Estudiante> listaEstudiante;
-    ArrayList<Profesor> listaProfesores;
-    ArrayList<Curso> listaCursos;
+
+    DefaultTableModel modeloTabla;
+    ArrayList<Calificaciones> listaCalificaciones = new ArrayList<>();
+    ArrayList<Estudiante> listaEstudiante = new ArrayList<>();
+    ArrayList<Profesor> listaProfesores = new ArrayList<>();
+    String userEstudiante;
+
     /**
      * Creates new form Estudiante
+     *
      * @param parent
-     * @param listaEst
-     * @param listaProf
-     * @param listaCurso
+     * @param userEstudiante
      * @param modal
      */
-    public EstudianteInterfaz(java.awt.Frame parent, ArrayList<Estudiante> listaEst, ArrayList<Profesor> listaProf, ArrayList<Curso> listaCurso, boolean modal) {
+    public EstudianteInterfaz(java.awt.Frame parent, String userEstudiante, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.listaEstudiante = listaEst;
-        this.listaProfesores = listaProf;
-        this.listaCursos = listaCurso;
+        this.listaEstudiante = cargarEstudiantesDesdeArchivo("archivos/registrosEstudiante");
+        this.listaProfesores = cargarProfesoresDesdeArchivo("archivos/registrosProfesor");
+        this.userEstudiante = userEstudiante;
+        this.listaCalificaciones = cargarCalificacionesDesdeArchivo("archivos/registrosCalificacion");
+        jTUserEst.setText(userEstudiante);
+        cargarDatosCalificacionesEnTabla();
+    }
+
+    public void cargarDatosCalificacionesEnTabla() {
+        modeloTabla = (DefaultTableModel) jTableCalificaciones.getModel();
+        modeloTabla.setRowCount(0);
+
+        for (Calificaciones cal : listaCalificaciones) {
+            if (cal.getEstudianteCal().getUsuarioEst().equals(userEstudiante)) {
+                Object[] fila = {cal.getEstudianteCal().getNombreP(), cal.getProfesorCal().getEspecialidadProf(), cal.getNota(), "APROBADO"};
+                modeloTabla.addRow(fila);
+            }
+        }
+        jTableCalificaciones.setModel(modeloTabla);
+    }
+
+    public ArrayList<Calificaciones> cargarCalificacionesDesdeArchivo(String ruta) {
+        ArrayList<Calificaciones> lista = new ArrayList<>();
+        boolean repetido = false;
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split(";");
+                if (partes.length == 4) {
+                    String idM = partes[0];
+                    for (Calificaciones cal : listaCalificaciones) {
+                        if (cal.getCodigoCal().equals(idM)) {
+                            repetido = true;
+                            break;
+                        }
+                    }
+                    Estudiante est = buscarEstudiantePorCodigo(partes[1]);
+                    Profesor prof = buscarProfesorPorCodigo(partes[2]);
+                    if (est != null && prof != null) {
+                        Calificaciones cali = new Calificaciones();
+                        cali.setCodigoCal(partes[0]);
+                        cali.setEstudianteCal(est);
+                        cali.setProfesorCal(prof);
+                        cali.setNota(Double.parseDouble(partes[3]));
+                        lista.add(cali);
+                    } else {
+                        System.err.println("Estudiante o profesor no encontrado para calificación con código: " + partes[0]);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar calificaciones: " + e.getMessage());
+        }
+        return lista;
+    }
+
+    public Estudiante buscarEstudiantePorCodigo(String codigo) {
+        for (Estudiante e : listaEstudiante) {
+            if (e.getUsuarioEst().equals(codigo)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    public Profesor buscarProfesorPorCodigo(String codigo) {
+        for (Profesor p : listaProfesores) {
+            if (p.getUsuarioProf().equals(codigo)) {
+                return p;
+            }
+        }
+        return null;
     }
 
     /**
@@ -43,81 +118,141 @@ public class EstudianteInterfaz extends javax.swing.JDialog {
 
         jLabel1 = new javax.swing.JLabel();
         jTUserEst = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jBConsultarCalificaciones = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableCalificaciones = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setText("ESTUDIANTE");
+        jLabel1.setText("CALIFICACIONES DE ESTUDIANTE");
 
-        jLabel2.setText("Ingrese su User:");
-
-        jBConsultarCalificaciones.setText("CONSULTAR CALIFICACIONES");
+        jTUserEst.setEditable(false);
 
         jTableCalificaciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "MATERIA", "NOTA", "ESTADO"
+                "ESTUDIANTE", "MATERIA", "NOTA", "ESTADO"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
+        jTableCalificaciones.setRowSelectionAllowed(false);
         jScrollPane1.setViewportView(jTableCalificaciones);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(240, 240, 240))
             .addGroup(layout.createSequentialGroup()
+                .addGap(177, 177, 177)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(117, 117, 117)
-                            .addComponent(jLabel2)
-                            .addGap(31, 31, 31)
-                            .addComponent(jTUserEst, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(167, 167, 167)
-                            .addComponent(jBConsultarCalificaciones))))
-                .addContainerGap(144, Short.MAX_VALUE))
+                    .addComponent(jTUserEst, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(48, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(44, 44, 44)
                 .addComponent(jLabel1)
-                .addGap(43, 43, 43)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTUserEst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(47, 47, 47)
-                .addComponent(jBConsultarCalificaciones)
-                .addGap(33, 33, 33)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(72, Short.MAX_VALUE))
+                .addGap(35, 35, 35)
+                .addComponent(jTUserEst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public ArrayList<Estudiante> cargarEstudiantesDesdeArchivo(String ruta) {
+        ArrayList<Estudiante> lista = new ArrayList<>();
+        boolean repetido = false;
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split(";");
+                if (partes.length == 6) {
+                    String user = partes[0];
+                    for (Estudiante e : listaEstudiante) {
+                        if (e.getUsuarioEst().equals(user)) {
+                            repetido = true;
+                            break;
+                        }
+                    }
+                    if (!repetido) {
+                        Estudiante est = new Estudiante();
+                        est.setUsuarioEst(partes[0]);
+                        est.setContrasenaEst(partes[1]);
+                        est.setNombreP(partes[2]);
+                        est.setCedulaP(partes[3]);
+                        est.setEdadP(Integer.parseInt(partes[4]));
+                        est.setTelefonoP(partes[5]);
+                        lista.add(est);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar estudiante: " + e.getMessage());
+        }
+        return lista;
+    }
+    
+    public ArrayList<Profesor> cargarProfesoresDesdeArchivo(String ruta) {
+        ArrayList<Profesor> lista = new ArrayList<>();
+        boolean repetido = false;
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split(";");
+                if (partes.length == 7) {
+                    String user = partes[0];
+                    for (Profesor p : listaProfesores) {
+                        if (p.getUsuarioProf().equals(user)) {
+                            repetido = true;
+                            break;
+                        }
+                    }
+                    if (!repetido) {
+                        Profesor prof = new Profesor();
+                        prof.setUsuarioProf(partes[0]);
+                        prof.setContrasenaProf(partes[1]);
+                        prof.setNombreP(partes[2]);
+                        prof.setEdadP(Integer.parseInt(partes[3]));
+                        prof.setCedulaP(partes[4]);
+                        prof.setTelefonoP(partes[5]);
+                        prof.setEspecialidadProf(partes[6]);
+                        lista.add(prof);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar profesor: " + e.getMessage());
+        }
+        return lista;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -148,8 +283,9 @@ public class EstudianteInterfaz extends javax.swing.JDialog {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                EstudianteInterfaz dialog = new EstudianteInterfaz(new javax.swing.JFrame(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), true);
+                EstudianteInterfaz dialog = new EstudianteInterfaz(new javax.swing.JFrame(), new String(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -162,9 +298,7 @@ public class EstudianteInterfaz extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jBConsultarCalificaciones;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTUserEst;
     private javax.swing.JTable jTableCalificaciones;

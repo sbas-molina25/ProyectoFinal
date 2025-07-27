@@ -19,14 +19,12 @@ public class Estudiante extends Persona {
 
     private String usuarioEst;
     private String contrasenaEst;
-    private Curso cursoAsignado;
     private ArrayList<Calificaciones> listaCalificaciones;
 
     public Estudiante() {
         super();
         this.usuarioEst = cambiarUsuario();
         this.contrasenaEst = "12345";
-        this.cursoAsignado = null;
         this.listaCalificaciones = new ArrayList<>();
     }
 
@@ -76,14 +74,6 @@ public class Estudiante extends Persona {
         this.contrasenaEst = contrasenaEst;
     }
 
-    public Curso getCursoAsignado() {
-        return cursoAsignado;
-    }
-
-    public void setCursoAsignado(Curso cursoAsignado) {
-        this.cursoAsignado = cursoAsignado;
-    }
-
     public ArrayList<Calificaciones> getListaCalificaciones() {
         return listaCalificaciones;
     }
@@ -98,7 +88,6 @@ public class Estudiante extends Persona {
         sb.append("Estudiante{");
         sb.append("usuarioEst=").append(usuarioEst);
         sb.append(", contrasenaEst=").append(contrasenaEst);
-        sb.append(", cursoAsignado=").append(cursoAsignado);
         sb.append(", listaCalificaciones=").append(listaCalificaciones);
         sb.append('}');
         return sb.toString();
