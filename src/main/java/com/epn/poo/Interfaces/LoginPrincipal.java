@@ -112,7 +112,7 @@ public class LoginPrincipal extends javax.swing.JFrame {
                     ventanaEstudiante.setVisible(true);
                     break;
                 case "PRF":
-                    ProfesorInterfaz ventanaProfesor = new ProfesorInterfaz(this, true);
+                    ProfesorInterfaz ventanaProfesor = new ProfesorInterfaz(this, userCompleto, true);
                     ventanaProfesor.setLocationRelativeTo(null);
                     ventanaProfesor.setVisible(true);
                     break;

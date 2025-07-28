@@ -4,18 +4,95 @@
  */
 package com.epn.poo.Interfaces;
 
+import com.epn.poo.ClasesAdministracionColegio.Calificaciones;
+import com.epn.poo.ClasesAdministracionColegio.Curso;
+import com.epn.poo.ClasesAdministracionColegio.Estudiante;
+import com.epn.poo.ClasesAdministracionColegio.Profesor;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Sebas
  */
 public class ProfesorInterfaz extends javax.swing.JDialog {
 
+    DefaultComboBoxModel nombreCursosPorProf;
+    DefaultTableModel modeloTabla;
+    ArrayList<Calificaciones> listaCalificaciones = new ArrayList<>();
+    ArrayList<Curso> listaCursos = new ArrayList<>();
+    ArrayList<Estudiante> listaEstudiante = new ArrayList<>();
+    ArrayList<Profesor> listaProfesores = new ArrayList<>();
+    Calificaciones calificacionG = new Calificaciones();
+    String userProfesor;
+
     /**
      * Creates new form Profesor
+     *
+     * @param parent
+     * @param userProfesor
+     * @param modal
      */
-    public ProfesorInterfaz(java.awt.Frame parent, boolean modal) {
+    public ProfesorInterfaz(java.awt.Frame parent, String userProfesor, boolean modal) {
         super(parent, modal);
+        this.listaEstudiante = cargarEstudiantesDesdeArchivo("archivos/registrosEstudiante");
+        this.listaProfesores = cargarProfesoresDesdeArchivo("archivos/registrosProfesor");
+        this.listaCursos = cargarCursosDesdeArchivo("archivos/registrosCurso");
+        this.listaCalificaciones = cargarCalificacionesDesdeArchivo("archivos/registrosCalificacion");
+        this.userProfesor = userProfesor;
         initComponents();
+        settearMateriasEnCB();
+
+    }
+
+    public void settearMateriasEnCB() {
+        nombreCursosPorProf = new DefaultComboBoxModel<>();
+        nombreCursosPorProf.addElement("Seleccione una opcion...");
+        ArrayList<String> idYNombreCursos = new ArrayList<>();
+        for (Curso c : listaCursos) {
+            for (Profesor p : c.getListaProfesores()) {
+                if (p.getUsuarioProf().equals(userProfesor)) {
+                    idYNombreCursos.add(c.getIdCurso() + "-" + c.getNombreCurso());
+                }
+            }
+        }
+        for (String s : idYNombreCursos) {
+            nombreCursosPorProf.addElement(s);
+        }
+        jCBCursosPorProf.setModel(nombreCursosPorProf);
+    }
+
+    public void cargarDatosEstudiantePorCursoEnTabla() {
+        modeloTabla = (DefaultTableModel) jTablaEstudiantePorCursoSeleccionado.getModel();
+        modeloTabla.setRowCount(0);
+
+        for (Curso c : listaCursos) {
+            if (c.getIdCurso().equals(getIdCursoSeleccionado())) {
+                for (Profesor p : c.getListaProfesores()) {
+                    if (p.getUsuarioProf().equals(userProfesor)) {
+                        for (Estudiante e : c.getListaEstudiantes()) {
+                            Object[] fila = {e.getUsuarioEst(), e.getNombreP()};
+                            modeloTabla.addRow(fila);
+                        }
+                    }
+                }
+            }
+
+        }
+        jTablaEstudiantePorCursoSeleccionado.setModel(modeloTabla);
+    }
+
+    public String getIdCursoSeleccionado() {
+        String jcbSeleccion = (String) jCBCursosPorProf.getSelectedItem();
+        String[] partes = jcbSeleccion.split("-");
+        return partes[0];
     }
 
     /**
@@ -27,21 +104,322 @@ public class ProfesorInterfaz extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTextField1 = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jCBCursosPorProf = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTablaEstudiantePorCursoSeleccionado = new javax.swing.JTable();
+        jBAsignarNota = new javax.swing.JButton();
+        jTNotaCalificacion = new javax.swing.JTextField();
+
+        jTextField1.setText("jTextField1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jLabel1.setText("ASIGNAR CALIFICACIONES");
+
+        jCBCursosPorProf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCBCursosPorProfActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Mis Cursos:");
+
+        jTablaEstudiantePorCursoSeleccionado.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "CODIGO", "NOMBRE"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTablaEstudiantePorCursoSeleccionado);
+
+        jBAsignarNota.setText("ASIGNAR NOTA");
+        jBAsignarNota.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBAsignarNotaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(206, 206, 206)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(135, 135, 135)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(101, 101, 101)
+                        .addComponent(jLabel2)
+                        .addGap(42, 42, 42)
+                        .addComponent(jCBCursosPorProf, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(119, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jTNotaCalificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(59, 59, 59)
+                .addComponent(jBAsignarNota)
+                .addGap(97, 97, 97))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addComponent(jLabel1)
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCBCursosPorProf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBAsignarNota)
+                    .addComponent(jTNotaCalificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jCBCursosPorProfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBCursosPorProfActionPerformed
+        // TODO add your handling code here:
+        if (jCBCursosPorProf.getSelectedItem().equals("Seleccione una opcion...")) {
+            JOptionPane.showMessageDialog(null, "Opcion no valida");
+        }
+        cargarDatosEstudiantePorCursoEnTabla();
+    }//GEN-LAST:event_jCBCursosPorProfActionPerformed
+
+    private void jBAsignarNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAsignarNotaActionPerformed
+        // TODO add your handling code here:
+        calificacionG.setEstudianteCal(getEstudianteSeleccionado(listaEstudiante));
+        calificacionG.setProfesorCal(getProfesorSeleccionado(listaProfesores));
+        calificacionG.setNota(Double.parseDouble(jTNotaCalificacion.getText()));
+        agregarCalificacion(calificacionG);
+        guardarCalificacionEnArchivo("archivos/registrosCalificacion", listaCalificaciones);
+    }//GEN-LAST:event_jBAsignarNotaActionPerformed
+
+    public void agregarCalificacion(Calificaciones nuevaCal) {
+        for (Calificaciones c : listaCalificaciones) {
+            if (c.getCodigoCal().equals(nuevaCal.getCodigoCal())) {
+                JOptionPane.showMessageDialog(null, "Calificacion ya registrada con ese codigo");
+                return;
+            }
+        }
+        listaCalificaciones.add(nuevaCal);
+    }
+    
+    public ArrayList<Estudiante> cargarEstudiantesDesdeArchivo(String ruta) {
+        ArrayList<Estudiante> lista = new ArrayList<>();
+        boolean repetido = false;
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split(";");
+                if (partes.length == 6) {
+                    String user = partes[0];
+                    for (Estudiante e : listaEstudiante) {
+                        if (e.getUsuarioEst().equals(user)) {
+                            repetido = true;
+                            break;
+                        }
+                    }
+                    if (!repetido) {
+                        Estudiante est = new Estudiante();
+                        est.setUsuarioEst(partes[0]);
+                        est.setContrasenaEst(partes[1]);
+                        est.setNombreP(partes[2]);
+                        est.setCedulaP(partes[3]);
+                        est.setEdadP(Integer.parseInt(partes[4]));
+                        est.setTelefonoP(partes[5]);
+                        lista.add(est);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar estudiante: " + e.getMessage());
+        }
+        return lista;
+    }
+
+    public ArrayList<Profesor> cargarProfesoresDesdeArchivo(String ruta) {
+        ArrayList<Profesor> lista = new ArrayList<>();
+        boolean repetido = false;
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split(";");
+                if (partes.length == 7) {
+                    String user = partes[0];
+                    for (Profesor p : listaProfesores) {
+                        if (p.getUsuarioProf().equals(user)) {
+                            repetido = true;
+                            break;
+                        }
+                    }
+                    if (!repetido) {
+                        Profesor prof = new Profesor();
+                        prof.setUsuarioProf(partes[0]);
+                        prof.setContrasenaProf(partes[1]);
+                        prof.setNombreP(partes[2]);
+                        prof.setEdadP(Integer.parseInt(partes[3]));
+                        prof.setCedulaP(partes[4]);
+                        prof.setTelefonoP(partes[5]);
+                        prof.setEspecialidadProf(partes[6]);
+                        lista.add(prof);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar profesor: " + e.getMessage());
+        }
+        return lista;
+    }
+
+    public ArrayList<Curso> cargarCursosDesdeArchivo(String ruta) {
+        ArrayList<Curso> lista = new ArrayList<>();
+        boolean repetido = false;
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split(";");
+                if (partes.length == 15) {
+                    String id = partes[0];
+                    for (Curso c : listaCursos) {
+                        if (c.getIdCurso().equals(id)) {
+                            repetido = true;
+                            break;
+                        }
+                    }
+                    if (!repetido) {
+                        Curso curso = new Curso();
+                        curso.setIdCurso(partes[0]);
+                        curso.setNombreCurso(partes[1]);
+                        ArrayList<Profesor> listaProf = new ArrayList<>();
+                        ArrayList<String> idProfesores = new ArrayList<>();
+                        Collections.addAll(idProfesores, partes[2], partes[3], partes[4]);
+                        for (Profesor p : listaProfesores) {
+                            if (idProfesores.contains(p.getUsuarioProf())) {
+                                listaProf.add(p);
+                            }
+                        }
+                        curso.setListaProfesores(listaProf);
+                        ArrayList<Estudiante> listaEst = new ArrayList<>();
+                        ArrayList<String> idEstudiantes = new ArrayList<>();
+                        Collections.addAll(idEstudiantes, partes[5], partes[6], partes[7], partes[8], partes[9], partes[10], partes[11], partes[12], partes[13], partes[14]);
+                        for (Estudiante e : listaEstudiante) {
+                            if (idEstudiantes.contains(e.getUsuarioEst())) {
+                                listaEst.add(e);
+                            }
+                        }
+                        curso.setListaEstudiantes(listaEst);
+                        lista.add(curso);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar curso: " + e.getMessage());
+        }
+        return lista;
+    }
+
+    public ArrayList<Calificaciones> cargarCalificacionesDesdeArchivo(String ruta) {
+        ArrayList<Calificaciones> lista = new ArrayList<>();
+        boolean repetido = false;
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split(";");
+                if (partes.length == 4) {
+                    String idCal = partes[0];
+                    for (Calificaciones c : listaCalificaciones) {
+                        if (c.getCodigoCal().equals(idCal)) {
+                            repetido = true;
+                            break;
+                        }
+                    }
+                    if (!repetido) {
+                        Calificaciones calG = new Calificaciones();
+                        calG.setCodigoCal(partes[0]);
+                        for (Estudiante e : listaEstudiante) {
+                            if (e.getUsuarioEst().equals(partes[1])) {
+                                calG.setEstudianteCal(e);
+                            }
+                        }
+                        for (Profesor p : listaProfesores) {
+                            if (p.getUsuarioProf().equals(partes[2])) {
+                                calG.setProfesorCal(p);
+                            }
+                        }
+                        calG.setNota(Double.parseDouble(partes[3]));
+                        lista.add(calG);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar calificacion: " + e.getMessage());
+        }
+        return lista;
+    }
+
+    public String getIdEstudianteSeleccionado() {
+        String nombreEstudiante = "";
+        int filaSeleccionada = jTablaEstudiantePorCursoSeleccionado.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            nombreEstudiante = jTablaEstudiantePorCursoSeleccionado.getValueAt(filaSeleccionada, 0).toString();
+        }
+        return nombreEstudiante;
+    }
+
+    public Estudiante getEstudianteSeleccionado(ArrayList<Estudiante> listaEst) {
+        String idSeleccionado = getIdEstudianteSeleccionado();
+        for (Estudiante e : listaEst) {
+            if (e.getUsuarioEst().equals(idSeleccionado)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    public Profesor getProfesorSeleccionado(ArrayList<Profesor> listaProf) {
+        for (Profesor p : listaProf) {
+            if (p.getUsuarioProf().equals(userProfesor)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public void guardarCalificacionEnArchivo(String ruta, ArrayList<Calificaciones> listaCalificaciones) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ruta))) {
+            for (Calificaciones cal : listaCalificaciones) {
+                String linea = cal.getCodigoCal() + ";" + cal.getEstudianteCal().getUsuarioEst() + ";" + cal.getProfesorCal().getUsuarioProf() + ";" + cal.getNota();
+                bw.write(linea);
+                bw.newLine();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar el calificacion: " + e.getMessage());
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -74,7 +452,7 @@ public class ProfesorInterfaz extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ProfesorInterfaz dialog = new ProfesorInterfaz(new javax.swing.JFrame(), true);
+                ProfesorInterfaz dialog = new ProfesorInterfaz(new javax.swing.JFrame(), new String(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -87,5 +465,13 @@ public class ProfesorInterfaz extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBAsignarNota;
+    private javax.swing.JComboBox<String> jCBCursosPorProf;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTNotaCalificacion;
+    private javax.swing.JTable jTablaEstudiantePorCursoSeleccionado;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

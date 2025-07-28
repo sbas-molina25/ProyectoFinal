@@ -19,13 +19,11 @@ public class Estudiante extends Persona {
 
     private String usuarioEst;
     private String contrasenaEst;
-    private ArrayList<Calificaciones> listaCalificaciones;
 
     public Estudiante() {
         super();
         this.usuarioEst = cambiarUsuario();
         this.contrasenaEst = "12345";
-        this.listaCalificaciones = new ArrayList<>();
     }
 
     public String cambiarUsuario() {
@@ -56,8 +54,6 @@ public class Estudiante extends Persona {
         }
     }
 
-    // metodo para cambiar el usuario
-    // metodo para cambbiar la contrasena
     public String getUsuarioEst() {
         return usuarioEst;
     }
@@ -74,21 +70,12 @@ public class Estudiante extends Persona {
         this.contrasenaEst = contrasenaEst;
     }
 
-    public ArrayList<Calificaciones> getListaCalificaciones() {
-        return listaCalificaciones;
-    }
-
-    public void setListaCalificaciones(ArrayList<Calificaciones> listaCalificaciones) {
-        this.listaCalificaciones = listaCalificaciones;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Estudiante{");
         sb.append("usuarioEst=").append(usuarioEst);
         sb.append(", contrasenaEst=").append(contrasenaEst);
-        sb.append(", listaCalificaciones=").append(listaCalificaciones);
         sb.append('}');
         return sb.toString();
     }
