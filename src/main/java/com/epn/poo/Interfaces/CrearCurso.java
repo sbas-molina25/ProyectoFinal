@@ -32,6 +32,11 @@ public class CrearCurso extends javax.swing.JDialog {
     public CrearCurso(java.awt.Frame parent, ArrayList<Estudiante> listaEstudiantes, ArrayList<Profesor> listaProfesor, boolean modal) {
         super(parent, modal);
         initComponents();
+        jTablaEstudiantes.setVisible(false);
+        jScrollPane1.setVisible(false);
+        jLabel4.setVisible(false);
+        jBAgregarEstudiante.setVisible(false);
+        jBCrearCurso.setVisible(false);
         this.listaProfesores = listaProfesor;
         this.listaEstudiante = listaEstudiantes;
         settearMateriasEnCB();
@@ -57,6 +62,7 @@ public class CrearCurso extends javax.swing.JDialog {
         jTablaEstudiantes = new javax.swing.JTable();
         jBAgregarEstudiante = new javax.swing.JButton();
         jBCrearCurso = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -70,9 +76,9 @@ public class CrearCurso extends javax.swing.JDialog {
             }
         });
 
-        jLabel3.setText("Materia:");
+        jLabel3.setText("Materia (Puede agregar maximo 3):");
 
-        jBAgregarMateria.setText("AGREGAR MATERIA");
+        jBAgregarMateria.setText("AGREGAR ");
         jBAgregarMateria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBAgregarMateriaActionPerformed(evt);
@@ -107,7 +113,7 @@ public class CrearCurso extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(jTablaEstudiantes);
 
-        jBAgregarEstudiante.setText("AGREGAR ESTUDIANTE");
+        jBAgregarEstudiante.setText("AGREGAR ");
         jBAgregarEstudiante.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBAgregarEstudianteActionPerformed(evt);
@@ -121,61 +127,78 @@ public class CrearCurso extends javax.swing.JDialog {
             }
         });
 
+        jLabel4.setText("Estudiantes (Puede agregar maximo 10): ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(0, 124, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(jBAgregarEstudiante)
+                        .addGap(44, 44, 44))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jBCrearCurso)
+                        .addGap(186, 186, 186))))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(159, 159, 159)
-                        .addComponent(jBCrearCurso))
+                        .addGap(233, 233, 233)
+                        .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jBAgregarEstudiante))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(22, 22, 22)
-                                .addComponent(jCBMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jBAgregarMateria))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(120, 120, 120)
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTNombreCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(25, Short.MAX_VALUE))
+                        .addGap(132, 132, 132)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTNombreCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(110, 110, 110)
+                        .addComponent(jCBMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(207, 207, 207))
+                .addGap(40, 152, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(168, 168, 168))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jBAgregarMateria)
+                        .addGap(203, 203, 203))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(132, 132, 132)
+                .addComponent(jLabel4)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addGap(24, 24, 24)
                 .addComponent(jLabel1)
-                .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTNombreCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jBAgregarEstudiante)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTNombreCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(28, 28, 28)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCBMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jBAgregarMateria, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCBMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)
-                            .addComponent(jBAgregarMateria, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(44, 44, 44)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(136, 136, 136)
+                        .addComponent(jBAgregarEstudiante)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addComponent(jBCrearCurso)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
         );
 
         pack();
@@ -184,11 +207,11 @@ public class CrearCurso extends javax.swing.JDialog {
     private void jBCrearCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCrearCursoActionPerformed
         // TODO add your handling code here:
         if (cursoG.getListaProfesores().size() != 3) {
-            JOptionPane.showMessageDialog(null, "El curso debe tener tres materias/profesores para ser creado");
+            JOptionPane.showMessageDialog(null, "El curso debe tener tres materias/profesores para ser creado"); //Verifica que haya 3 materias antes de registrar los datos
             return;
         }
         if (cursoG.getListaEstudiantes().size() < 10) {
-            JOptionPane.showMessageDialog(null, "El curso debe tener diez estudiantes para ser creado");
+            JOptionPane.showMessageDialog(null, "El curso debe tener diez estudiantes para ser creado"); //Verifica que haya 10 estudiantes antes de registrar los datos
             return;
         }
         cursoG.setNombreCurso(jTNombreCurso.getText());
@@ -203,28 +226,48 @@ public class CrearCurso extends javax.swing.JDialog {
     private void jBAgregarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAgregarEstudianteActionPerformed
         // TODO add your handling code here:
         if (cursoG.getListaEstudiantes().size() == 10) {
-            JOptionPane.showMessageDialog(null, "Se alcanzo el limite de estudiantes por curso");
+            JOptionPane.showMessageDialog(null, "Se alcanzo el limite de estudiantes por curso"); //Verifica que no ingrese mas de 10 estudiantes 
+            jBCrearCurso.setVisible(true);
+            jBAgregarEstudiante.setVisible(false);
             return;
         }
         cursoG.agregarEstudianteEnCurso(getEstudianteSeleccionado(listaEstudiante));
-        // eliminar del jtable al estudiante seleccionado, para no seleccionarlo dos veces
-        modeloTabla.removeRow(jTablaEstudiantes.getSelectedRow());
-        jTablaEstudiantes.clearSelection();
+        modeloTabla.removeRow(jTablaEstudiantes.getSelectedRow()); // Eliminar del jtable al estudiante seleccionado, para no seleccionarlo dos veces
+        jTablaEstudiantes.clearSelection(); //Quita la seleccion anterior
     }//GEN-LAST:event_jBAgregarEstudianteActionPerformed
 
     private void jBAgregarMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAgregarMateriaActionPerformed
         // TODO add your handling code here:
         if (cursoG.getListaProfesores().size() == 3) {
-            JOptionPane.showMessageDialog(null, "Se alcanzo el limite de materias/profesores por curso");
+            JOptionPane.showMessageDialog(null, "Se alcanzo el limite de materias/profesores por curso");//Verifica que no ingrese mas de 3 materias 
+            jTablaEstudiantes.setVisible(true);
+            jScrollPane1.setVisible(true);
+            jLabel4.setVisible(true);
+            jBAgregarEstudiante.setVisible(true);
+            jBAgregarMateria.setVisible(false);
             return;
         }
         cursoG.agregarProfesorEnCurso(getProfesorSeleccionado(listaProfesores));
+        int seleccionado = jCBMaterias.getSelectedIndex();
+        if (seleccionado != 0) {
+            jCBMaterias.removeItemAt(seleccionado); //Elimina la opcion seleccionada despues de registrarla, para que no se repita
+            jCBMaterias.setSelectedIndex(0);
+        }
     }//GEN-LAST:event_jBAgregarMateriaActionPerformed
 
+    //Metodo para retornar el curso creado
     public Curso getCursoCreado() {
         return cursoG;
     }
 
+    //Metodo para retornar el idSeleccionado del Profesor en el JComboBox
+    public String getIdSeleccionado() {
+        String jcbSeleccion = (String) jCBMaterias.getSelectedItem();
+        String[] partes = jcbSeleccion.split("-");
+        return partes[0];
+    }
+    
+    //Metodo para buscar el profesor dependiendo de que escogio en el JComboBox, y retornarlo
     public Profesor getProfesorSeleccionado(ArrayList<Profesor> listaProf) {
         String profSeleccionado = getIdSeleccionado();
         for (Profesor p : listaProf) {
@@ -235,6 +278,7 @@ public class CrearCurso extends javax.swing.JDialog {
         return null;
     }
 
+    //Metodo para retornar el nombre del estudiante seleccionado en el JTable
     public String getNombreEstudianteSeleccionado() {
         String nombreEstudiante = "";
         int filaSeleccionada = jTablaEstudiantes.getSelectedRow();
@@ -244,8 +288,9 @@ public class CrearCurso extends javax.swing.JDialog {
         return nombreEstudiante;
     }
 
+    //Metodo para buscar el estudiante dependiendo del nombre seleccionado en el JTable, y retornarlo
     public Estudiante getEstudianteSeleccionado(ArrayList<Estudiante> listaEst) {
-        String nombreSeleccionado = getNombreEstudianteSeleccionado();
+        String nombreSeleccionado = getNombreEstudianteSeleccionado(); //Se utiliza el metodo para obtener el String de nombreSeleccionado
         for (Estudiante e : listaEst) {
             if (e.getNombreP().equals(nombreSeleccionado)) {
                 return e;
@@ -254,6 +299,7 @@ public class CrearCurso extends javax.swing.JDialog {
         return null;
     }
 
+    //Metodo para ingresar los datos del ArrayList de Profesores en el JComboBox
     public void settearMateriasEnCB() {
         nombresMateria = new DefaultComboBoxModel<>();
         nombresMateria.addElement("Seleccione una opcion...");
@@ -268,6 +314,7 @@ public class CrearCurso extends javax.swing.JDialog {
         jCBMaterias.setModel(nombresMateria);
     }
 
+    //Metodo para ingresar los datos de estudiante en el JTable
     public void cargarDatosEstudianteEnTabla() {
         modeloTabla = (DefaultTableModel) jTablaEstudiantes.getModel();
         modeloTabla.setRowCount(0);
@@ -276,12 +323,6 @@ public class CrearCurso extends javax.swing.JDialog {
             modeloTabla.addRow(fila);
         }
         jTablaEstudiantes.setModel(modeloTabla);
-    }
-
-    public String getIdSeleccionado() {
-        String jcbSeleccion = (String) jCBMaterias.getSelectedItem();
-        String[] partes = jcbSeleccion.split("-");
-        return partes[0];
     }
 
     /**
@@ -313,6 +354,7 @@ public class CrearCurso extends javax.swing.JDialog {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 CrearCurso dialog = new CrearCurso(new javax.swing.JFrame(), new ArrayList<>(), new ArrayList<>(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -334,6 +376,7 @@ public class CrearCurso extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTNombreCurso;
     private javax.swing.JTable jTablaEstudiantes;

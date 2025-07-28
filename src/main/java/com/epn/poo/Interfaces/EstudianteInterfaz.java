@@ -47,7 +47,13 @@ public class EstudianteInterfaz extends javax.swing.JDialog {
 
         for (Calificaciones cal : listaCalificaciones) {
             if (cal.getEstudianteCal().getUsuarioEst().equals(userEstudiante)) {
-                Object[] fila = {cal.getEstudianteCal().getNombreP(), cal.getProfesorCal().getEspecialidadProf(), cal.getNota(), "APROBADO"};
+                String estado;
+                if (cal.getNota() < 14) {
+                    estado = "APROBADO";
+                } else {
+                    estado = "REPROBADO";
+                }
+                Object[] fila = {cal.getEstudianteCal().getNombreP(), cal.getProfesorCal().getEspecialidadProf(), cal.getNota(), estado};
                 modeloTabla.addRow(fila);
             }
         }

@@ -123,18 +123,20 @@ public class MatricularEstudiante extends javax.swing.JDialog {
 
     private void jBMatricularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBMatricularActionPerformed
         // TODO add your handling code here:
-        if (jTNombreEst.getText().isEmpty() || jTEdadEst.getText().isEmpty() || jTCedulaEst.getText().isEmpty() || jTTelefonoEst.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe llenar todos los campos");
+        if (jTNombreEst.getText().isEmpty() || jTEdadEst.getText().isEmpty() || jTCedulaEst.getText().isEmpty() || jTTelefonoEst.getText().isEmpty()) { 
+            JOptionPane.showMessageDialog(null, "Debe llenar todos los campos"); //Verificar que los campos no esten vacios
             return;
         }
+        //Setteo de los datos en un objeto Estudiante
         estudianteG.setNombreP(jTNombreEst.getText());
         estudianteG.setCedulaP(jTCedulaEst.getText());
         estudianteG.setEdadP(Integer.parseInt(jTEdadEst.getText()));
         estudianteG.setTelefonoP(jTTelefonoEst.getText());
-        JOptionPane.showMessageDialog(null, "Estudiante matriculado\n Usuario: " + estudianteG.getUsuarioEst() + "\nContraseña: " + estudianteG.getContrasenaEst());
+        JOptionPane.showMessageDialog(null, "Estudiante matriculado\n Usuario: " + estudianteG.getUsuarioEst() + "\nContraseña: " + estudianteG.getContrasenaEst()); //Mostrar Usuario y Contrasena
         this.dispose();
     }//GEN-LAST:event_jBMatricularActionPerformed
 
+    // Metodo para retornar el estudiante creado
     public Estudiante getEstudianteCreado() {
         return estudianteG;
     }

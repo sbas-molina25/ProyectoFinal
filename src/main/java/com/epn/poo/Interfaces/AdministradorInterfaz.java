@@ -5,21 +5,16 @@
 package com.epn.poo.Interfaces;
 
 import com.epn.poo.ClasesAdministracionColegio.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.*;
+import java.util.*;
+import java.util.logging.*;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Sebas
  */
-public class Admin extends javax.swing.JDialog {
+public class AdministradorInterfaz extends javax.swing.JDialog {
 
     ArrayList<Estudiante> listaEstudiante = new ArrayList<>();
     ArrayList<Profesor> listaProfesores = new ArrayList<>();
@@ -30,15 +25,14 @@ public class Admin extends javax.swing.JDialog {
      *
      * @param parent
      * @param modal
+     * @throws java.lang.Exception
      */
-    public Admin(java.awt.Frame parent, boolean modal) throws Exception {
+    public AdministradorInterfaz(java.awt.Frame parent, boolean modal) throws Exception {
         super(parent, modal);
         initComponents();
-        //this.listaEstudiante = new ArrayList<>();
         this.listaEstudiante = cargarEstudiantesDesdeArchivo("archivos/registrosEstudiante");
         this.listaProfesores = cargarProfesoresDesdeArchivo("archivos/registrosProfesor");
-        this.listaCursos = cargarCursosDesdeArchivo("archivos/regitrosCurso");
-
+        this.listaCursos = cargarCursosDesdeArchivo("archivos/registrosCurso");
     }
 
     /**
@@ -120,7 +114,7 @@ public class Admin extends javax.swing.JDialog {
         crearCurso.setLocationRelativeTo(null);
         crearCurso.setVisible(true);
         agregarCurso(crearCurso.getCursoCreado());
-        guardarCursoEnArchivo("archivos/regitrosCurso", listaCursos);
+        guardarCursoEnArchivo("archivos/registrosCurso", listaCursos);
     }//GEN-LAST:event_jBCrearNuevoCursoActionPerformed
 
     private void jBMatricularEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBMatricularEstudianteActionPerformed
@@ -140,67 +134,72 @@ public class Admin extends javax.swing.JDialog {
         agregarProfesor(contratar.getProfesorCreado());
         guardarProfesoresEnArchivo("archivos/registrosProfesor", listaProfesores);
     }//GEN-LAST:event_jBContratarProfesorActionPerformed
-
+    //Retorna la lista de estudiantes creada
     public ArrayList<Estudiante> getListaEstudianteCreada() {
         return listaEstudiante;
     }
-    
+
+    //Retorna la lista de profesores creada
     public ArrayList<Profesor> getListaProfesorCreada() {
         return listaProfesores;
     }
-    
+
+    //Retorna la lista de cursos creada
     public ArrayList<Curso> getListaCursoCreado() {
         return listaCursos;
     }
 
+    //Metodo para agregar el estudiante creado a la lista de estudiantes
     public void agregarEstudiante(Estudiante nuevoEst) {
         for (Estudiante e : listaEstudiante) {
-            if (e.getUsuarioEst().equals(nuevoEst.getUsuarioEst())) {
+            if (e.getUsuarioEst().equals(nuevoEst.getUsuarioEst())) { // Verifica que no se repitan los usuarios(ID)
                 JOptionPane.showMessageDialog(null, "Estudiante ya registrado con esa usuario");
                 return;
             }
         }
-        listaEstudiante.add(nuevoEst);
+        listaEstudiante.add(nuevoEst); //Si no hay repetidos, agrega a la lista
     }
 
+    //Metodo para agregar el profesor creado a la lista de profesores
     public void agregarProfesor(Profesor nuevoProf) {
         for (Profesor p : listaProfesores) {
-            if (p.getUsuarioProf().equals(nuevoProf.getUsuarioProf())) {
+            if (p.getUsuarioProf().equals(nuevoProf.getUsuarioProf())) { // Verifica que no se repitan los usuarios(ID)
                 JOptionPane.showMessageDialog(null, "Profesor ya registrado con ese usuario");
                 return;
             }
         }
-        listaProfesores.add(nuevoProf);
+        listaProfesores.add(nuevoProf); //Si no hay repetidos, agrega a la lista
     }
 
+    //Metodo para agregar el curso creado a la lista de cursos
     public void agregarCurso(Curso nuevoCurso) {
-        
         for (Curso c : listaCursos) {
-            if (c.getIdCurso().equals(nuevoCurso.getIdCurso())) {
+            if (c.getIdCurso().equals(nuevoCurso.getIdCurso())) { // Verifica que no se repitan los ID
                 System.out.println("codigo curso creado " + nuevoCurso.getIdCurso());
                 JOptionPane.showMessageDialog(null, "Curso ya registrado con ese usuario");
                 return;
             }
         }
-        listaCursos.add(nuevoCurso);
+        listaCursos.add(nuevoCurso); //Si no hay repetidos, agrega a la lista
     }
 
+    //Metodo que recorre el archivo de registrosEstudiante y settea sus datos en un arreglo
     public ArrayList<Estudiante> cargarEstudiantesDesdeArchivo(String ruta) throws Exception {
         ArrayList<Estudiante> lista = new ArrayList<>();
         boolean repetido = false;
-        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) { //Abre el archivo seleccionado
             String linea;
             while ((linea = br.readLine()) != null) {
-                String[] partes = linea.split(";");
+                String[] partes = linea.split(";"); //Pone en un arreglo los diferentes datos del archivo, para verificarlos o settearlos
                 if (partes.length == 6) {
                     String user = partes[0];
                     for (Estudiante e : listaEstudiante) {
-                        if (e.getUsuarioEst().equals(user)) {
+                        if (e.getUsuarioEst().equals(user)) { //Verifica que no haya repetidos
                             repetido = true;
                             break;
                         }
                     }
-                    if (!repetido) {
+                    if (!repetido) { //Si no hay repetidos, settea los datos del archivo en un objeto
                         Estudiante est = new Estudiante();
                         est.setUsuarioEst(partes[0]);
                         est.setContrasenaEst(partes[1]);
@@ -208,7 +207,7 @@ public class Admin extends javax.swing.JDialog {
                         est.setCedulaP(partes[3]);
                         est.setEdadP(Integer.parseInt(partes[4]));
                         est.setTelefonoP(partes[5]);
-                        lista.add(est);
+                        lista.add(est); //Agrega el objeto creado en una lista, para retornarla
                     }
                 }
             }
@@ -300,36 +299,51 @@ public class Admin extends javax.swing.JDialog {
         return lista;
     }
 
+    //Metodo para imprimir los datos del ArrayList de Estudiante en el archivo registrosEstudiante    
     public void guardarEstudiantesEnArchivo(String ruta, ArrayList<Estudiante> listaEst) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ruta))) {
             for (Estudiante e : listaEst) {
-                String linea = e.getUsuarioEst() + ";" + e.getContrasenaEst() + ";" + e.getNombreP() + ";" + e.getCedulaP() + ";" + e.getEdadP() + ";" + e.getTelefonoP();
-                bw.write(linea);
-                bw.newLine();
+                if (e.getNombreP().equals("")) {
+                    JOptionPane.showMessageDialog(null, "No se ingreso bien el estudiante");
+                } else {
+                    String linea = e.getUsuarioEst() + ";" + e.getContrasenaEst() + ";" + e.getNombreP() + ";" + e.getCedulaP() + ";" + e.getEdadP() + ";" + e.getTelefonoP();
+                    bw.write(linea);
+                    bw.newLine();
+                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al guardar el estudiante: " + e.getMessage());
         }
     }
 
+    //Metodo para imprimir los datos del ArrayList de Profesor en el archivo registrosProfesor  
     public void guardarProfesoresEnArchivo(String ruta, ArrayList<Profesor> listaProf) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ruta))) {
             for (Profesor p : listaProf) {
-                String linea = p.getUsuarioProf() + ";" + p.getContrasenaProf() + ";" + p.getNombreP() + ";" + p.getCedulaP() + ";" + p.getEdadP() + ";" + p.getTelefonoP() + ";" + p.getEspecialidadProf();
-                bw.write(linea);
-                bw.newLine();
+                if (p.getNombreP().equals("")) {
+                    JOptionPane.showMessageDialog(null, "No se ingreso bien el profesor");
+                } else {
+                    String linea = p.getUsuarioProf() + ";" + p.getContrasenaProf() + ";" + p.getNombreP() + ";" + p.getCedulaP() + ";" + p.getEdadP() + ";" + p.getTelefonoP() + ";" + p.getEspecialidadProf();
+                    bw.write(linea);
+                    bw.newLine();
+                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al guardar el estudiante: " + e.getMessage());
         }
     }
 
+    //Metodo para imprimir los datos del ArrayList de Curso en el archivo registrosCurso 
     public void guardarCursoEnArchivo(String ruta, ArrayList<Curso> listaCurso) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ruta))) {
             for (Curso c : listaCurso) {
-                String linea = c.getIdCurso() + ";" + c.getNombreCurso() + ";" + c.getIDArregloProfesores() + ";" + c.getIDArregloEstudiantes();
-                bw.write(linea);
-                bw.newLine();
+                if (c.getNombreCurso().equals("")) {
+                    JOptionPane.showMessageDialog(null, "No se ingreso bien el curso");
+                } else {
+                    String linea = c.getIdCurso() + ";" + c.getNombreCurso() + ";" + c.getIDArregloProfesores() + ";" + c.getIDArregloEstudiantes();
+                    bw.write(linea);
+                    bw.newLine();
+                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al guardar el curso: " + e.getMessage());
@@ -353,14 +367,15 @@ public class Admin extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdministradorInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdministradorInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdministradorInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdministradorInterfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
@@ -368,7 +383,7 @@ public class Admin extends javax.swing.JDialog {
             @Override
             public void run() {
                 try {
-                    Admin dialog = new Admin(new javax.swing.JFrame(), true);
+                    AdministradorInterfaz dialog = new AdministradorInterfaz(new javax.swing.JFrame(), true);
                     dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                         @Override
                         public void windowClosing(java.awt.event.WindowEvent e) {
@@ -377,7 +392,7 @@ public class Admin extends javax.swing.JDialog {
                     });
                     dialog.setVisible(true);
                 } catch (Exception ex) {
-                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AdministradorInterfaz.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });

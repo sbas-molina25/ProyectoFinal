@@ -96,10 +96,10 @@ public class LoginPrincipal extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             String usuarioVerificar = jTUsuario.getText().substring(0, 3).toUpperCase();
-            String userCompleto = jTUsuario.getText();
+            String userCompleto = jTUsuario.getText().toUpperCase();
             switch (usuarioVerificar) {
                 case "ADM":
-                    Admin ventanaAdmin = new Admin(this, true);
+                    AdministradorInterfaz ventanaAdmin = new AdministradorInterfaz(this, true);
                     ventanaAdmin.setLocationRelativeTo(null);
                     ventanaAdmin.setVisible(true);
                     this.listaEstudiante = ventanaAdmin.getListaEstudianteCreada();
@@ -154,6 +154,7 @@ public class LoginPrincipal extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new LoginPrincipal().setVisible(true);
             }

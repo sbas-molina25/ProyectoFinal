@@ -4,12 +4,10 @@
  */
 package com.epn.poo.ClasesAdministracionColegio;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import javax.swing.JOptionPane;
 
 /**
- * Materia, nota
  *
  * @author Sebas
  */
@@ -26,7 +24,7 @@ public class Calificaciones {
         this.profesorCal = null;
         this.nota = 0;
     }
-    
+
     public String cambiarUsuario() {
         String userArchivo = getUltimoCodigo();
         String userID = userArchivo.substring(0, 3);
@@ -70,7 +68,6 @@ public class Calificaciones {
     public void setProfesorCal(Profesor profesorCal) {
         this.profesorCal = profesorCal;
     }
-        
 
     public Estudiante getEstudianteCal() {
         return estudianteCal;
@@ -85,16 +82,21 @@ public class Calificaciones {
     }
 
     public void setNota(double nota) {
-        this.nota = nota;
+        if (nota > 0 && nota <= 20) {
+            this.nota = nota;
+        } else {
+            JOptionPane.showMessageDialog(null, "La nota debe ser entre 0 y 20");
+        }
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Calificaciones{");
-        sb.append("estudianteCal=").append(estudianteCal);
+        sb.append("codigoCal=").append(codigoCal);
+        sb.append(", estudianteCal=").append(estudianteCal);
+        sb.append(", profesorCal=").append(profesorCal);
         sb.append(", nota=").append(nota);
-        sb.append('}');
         return sb.toString();
     }
 

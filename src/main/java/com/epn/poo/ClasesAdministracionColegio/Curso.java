@@ -4,16 +4,11 @@
  */
 package com.epn.poo.ClasesAdministracionColegio;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
- * Nombre, lista de materias, lista de estudiantes cada curso va a tener un
- * limite de estudiantes, y un limite de materias qeu se imparte en ese curso
- * por ejemplo: Octavo de Basica, materias: matematica, lenguaje, ciencias
- * naturales. y unos 30 diferentes estudiantes
  *
  * @author Sebas
  */
@@ -59,6 +54,14 @@ public class Curso {
         }
     }
 
+    public String getIdCurso() {
+        return idCurso;
+    }
+
+    public void setIdCurso(String idCurso) {
+        this.idCurso = idCurso;
+    }
+    
     public String getNombreCurso() {
         return nombreCurso;
     }
@@ -73,14 +76,6 @@ public class Curso {
 
     public void setListaProfesores(ArrayList<Profesor> listaProfesores) {
         this.listaProfesores = listaProfesores;
-    }
-
-    public String getIdCurso() {
-        return idCurso;
-    }
-
-    public void setIdCurso(String idCurso) {
-        this.idCurso = idCurso;
     }
 
     public ArrayList<Estudiante> getListaEstudiantes() {
@@ -133,8 +128,10 @@ public class Curso {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Curso{");
-        sb.append("nombreCurso=").append(nombreCurso);
-        sb.append(", listaMaterias=").append(listaProfesores);
+        sb.append("idCurso=").append(idCurso);
+        sb.append(", nombreCurso=").append(nombreCurso);
+        sb.append(", listaProfesores=").append(listaProfesores);
+        sb.append(", listaEstudiantes=").append(listaEstudiantes);
         sb.append('}');
         return sb.toString();
     }

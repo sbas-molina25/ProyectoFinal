@@ -4,8 +4,7 @@
  */
 package com.epn.poo.ClasesAdministracionColegio;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import javax.swing.JOptionPane;
 
 /**
@@ -75,6 +74,17 @@ public class Profesor extends Persona {
 
     public void setEspecialidadProf(String especialidadProf) {
         this.especialidadProf = especialidadProf;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Profesor{");
+        sb.append("usuarioProf=").append(usuarioProf);
+        sb.append(", contrasenaProf=").append(contrasenaProf);
+        sb.append(", especialidadProf=").append(especialidadProf);
+        sb.append('}');
+        return sb.toString();
     }
 
 }

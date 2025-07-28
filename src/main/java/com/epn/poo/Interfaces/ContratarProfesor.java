@@ -140,17 +140,17 @@ public class ContratarProfesor extends javax.swing.JDialog {
 
     private void jBContratarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBContratarActionPerformed
         // TODO add your handling code here:
-        profeG.cambiarUsuario();
         if (jTNombreProf.getText().isEmpty() || jTEdadProf.getText().isEmpty() || jTCedulaProf.getText().isEmpty() || jTTelefonoProf.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe llenar todos los campos");
+            JOptionPane.showMessageDialog(null, "Debe llenar todos los campos"); //Verificar que llene todos los campos antes de registrar los datos
             return;
         }
+        //Settear los datos en un objeto Profesor
         profeG.setNombreP(jTNombreProf.getText());
         profeG.setEdadP(Integer.parseInt(jTEdadProf.getText()));
         profeG.setCedulaP(jTCedulaProf.getText());
         profeG.setTelefonoP(jTTelefonoProf.getText());
         profeG.setEspecialidadProf((String) jCBEspecialidad.getSelectedItem());
-        JOptionPane.showMessageDialog(null, "Profesor contratado\n Usuario: " + profeG.getUsuarioProf() + "\nContraseña: " + profeG.getContrasenaProf());
+        JOptionPane.showMessageDialog(null, "Profesor contratado\n Usuario: " + profeG.getUsuarioProf() + "\nContraseña: " + profeG.getContrasenaProf()); //Muestra Usuario y Contrasena
         this.dispose();
     }//GEN-LAST:event_jBContratarActionPerformed
 
@@ -158,12 +158,9 @@ public class ContratarProfesor extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jCBEspecialidadActionPerformed
 
+    //Metodo para retornar el profesor creado
     public Profesor getProfesorCreado() {
         return profeG;
-    }
-
-    public String getNombreProfesorAsignadoEnMateria() {
-        return profeG.getNombreP();
     }
 
     /**
