@@ -52,6 +52,16 @@ public class Estudiante extends Persona {
         }
     }
 
+    public String generarContrasena(String cedula) {
+        return "cv" + cedula;
+    }
+    
+    @Override
+    public void setCedulaP(String cedula) {
+        super.setCedulaP(cedula);
+        this.contrasenaEst = generarContrasena(cedula);
+    }
+
     public String getUsuarioEst() {
         return usuarioEst;
     }

@@ -323,7 +323,7 @@ public class AdministradorInterfaz extends javax.swing.JDialog {
                 if (p.getNombreP().equals("")) {
                     JOptionPane.showMessageDialog(null, "No se ingreso bien el profesor");
                 } else {
-                    String linea = p.getUsuarioProf() + ";" + p.getContrasenaProf() + ";" + p.getNombreP() + ";" + p.getCedulaP() + ";" + p.getEdadP() + ";" + p.getTelefonoP() + ";" + p.getEspecialidadProf();
+                    String linea = p.getUsuarioProf() + ";" + p.getContrasenaProf() + ";" + p.getNombreP() + ";" +  p.getEdadP() + ";" + p.getCedulaP() + ";" + p.getTelefonoP() + ";" + p.getEspecialidadProf();
                     bw.write(linea);
                     bw.newLine();
                 }

@@ -4,14 +4,12 @@
  */
 package com.epn.poo.ClasesAdministracionColegio;
 
-import javax.swing.JOptionPane;
-
 /**
  * Nombre, Edad, Cedula, Telefono, Usuario, Contraseña
  *
  * @author Sebas
  */
-public abstract class  Persona {
+public abstract class Persona {
 
     private String nombreP;
     private int edadP;
@@ -38,11 +36,7 @@ public abstract class  Persona {
     }
 
     public void setEdadP(int edadP) {
-        if (edadP > 0) {
-            this.edadP = edadP;
-        } else {
-            JOptionPane.showMessageDialog(null, "Edad invalida");
-        }
+        this.edadP = edadP;
     }
 
     public String getCedulaP() {
@@ -50,11 +44,7 @@ public abstract class  Persona {
     }
 
     public void setCedulaP(String cedulaP) {
-        if (cedulaP.length() == 10) {
-            this.cedulaP = cedulaP;
-        } else {
-            //JOptionPane.showMessageDialog(null, "Cedula invalida");
-        }
+        this.cedulaP = cedulaP;
     }
 
     public String getTelefonoP() {
@@ -62,11 +52,7 @@ public abstract class  Persona {
     }
 
     public void setTelefonoP(String telefonoP) {
-        if (telefonoP.length() == 10) {
-            this.telefonoP = telefonoP;
-        } else {
-            JOptionPane.showMessageDialog(null, "Telefono invalido");
-        }
+        this.telefonoP = telefonoP;
     }
 
     @Override

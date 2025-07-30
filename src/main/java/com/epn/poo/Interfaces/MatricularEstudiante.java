@@ -129,8 +129,23 @@ public class MatricularEstudiante extends javax.swing.JDialog {
         }
         //Setteo de los datos en un objeto Estudiante
         estudianteG.setNombreP(jTNombreEst.getText());
-        estudianteG.setCedulaP(jTCedulaEst.getText());
+        if (!validarEdad(jTEdadEst.getText())) {
+            JOptionPane.showMessageDialog(null, "Edad invalida");
+            jTEdadEst.setText("");
+            return;
+        }
         estudianteG.setEdadP(Integer.parseInt(jTEdadEst.getText()));
+        if (!validarCedulaEcuatoriana(jTCedulaEst.getText())) {
+            JOptionPane.showMessageDialog(null, "Cedula invalida");
+            jTCedulaEst.setText("");
+            return;
+        }
+        estudianteG.setCedulaP(jTCedulaEst.getText());
+        if (!validarTelefono(jTTelefonoEst.getText())) {
+            JOptionPane.showMessageDialog(null, "Telefono invalido");
+            jTTelefonoEst.setText("");
+            return;
+        }
         estudianteG.setTelefonoP(jTTelefonoEst.getText());
         JOptionPane.showMessageDialog(null, "Estudiante matriculado\n Usuario: " + estudianteG.getUsuarioEst() + "\nContraseña: " + estudianteG.getContrasenaEst()); //Mostrar Usuario y Contrasena
         this.dispose();
@@ -139,6 +154,50 @@ public class MatricularEstudiante extends javax.swing.JDialog {
     // Metodo para retornar el estudiante creado
     public Estudiante getEstudianteCreado() {
         return estudianteG;
+    }
+    
+    public boolean validarCedulaEcuatoriana(String cedula) {
+        int provincia = Integer.parseInt(cedula.substring(0, 2));
+        int tercerDigito = Integer.parseInt(cedula.substring(2, 3));
+        if (cedula == null || cedula.length() != 10 || !cedula.matches("\\d+")) {
+            return false;
+        }
+        if (provincia < 1 || provincia > 24 || tercerDigito >= 6) {
+            return false;
+        }
+
+        int[] coeficientes = {2, 1, 2, 1, 2, 1, 2, 1, 2};
+        int suma = 0;
+
+        for (int i = 0; i < 9; i++) {
+            int digito = Character.getNumericValue(cedula.charAt(i));
+            int producto = digito * coeficientes[i];
+            if (producto >= 10) {
+                producto -= 9;
+            }
+            suma += producto;
+        }
+
+        int digitoVerificador = (10 - (suma % 10)) % 10;
+
+        int ultimoDigito = Character.getNumericValue(cedula.charAt(9));
+        return digitoVerificador == ultimoDigito;
+    }
+
+    public boolean validarTelefono(String telefono) {
+        if (telefono.length() != 10) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validarEdad(String edadTexto) {
+        try {
+            int edad = Integer.parseInt(edadTexto); // Intenta convertir a número
+            return edad > 0; // Retorna true solo si es mayor que cero
+        } catch (NumberFormatException e) {
+            return false; // Si no es un número, retorna false
+        }
     }
 
     /**

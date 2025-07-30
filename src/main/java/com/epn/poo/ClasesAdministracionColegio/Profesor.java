@@ -51,6 +51,16 @@ public class Profesor extends Persona {
             return null;
         }
     }
+    
+    public String generarContrasena(String cedula) {
+        return "cv" + cedula;
+    }
+    
+    @Override
+    public void setCedulaP(String cedula) {
+        super.setCedulaP(cedula);
+        this.contrasenaProf = generarContrasena(cedula);
+    }
 
     public String getUsuarioProf() {
         return usuarioProf;
