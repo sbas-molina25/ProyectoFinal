@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  *
  * @author Sebas
  */
-public class Persona {
+public abstract class  Persona {
 
     private String nombreP;
     private int edadP;

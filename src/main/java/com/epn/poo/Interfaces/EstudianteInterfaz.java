@@ -37,7 +37,7 @@ public class EstudianteInterfaz extends javax.swing.JDialog {
         this.listaProfesores = cargarProfesoresDesdeArchivo("archivos/registrosProfesor");
         this.userEstudiante = userEstudiante;
         this.listaCalificaciones = cargarCalificacionesDesdeArchivo("archivos/registrosCalificacion");
-        jTUserEst.setText(userEstudiante);
+        jLCodigoEst.setText(userEstudiante);
         cargarDatosCalificacionesEnTabla();
     }
 
@@ -46,13 +46,13 @@ public class EstudianteInterfaz extends javax.swing.JDialog {
         modeloTabla.setRowCount(0);
 
         for (Calificaciones cal : listaCalificaciones) {
-            if (cal.getEstudianteCal().getUsuarioEst().equals(userEstudiante)) {
-                String estado;
-                if (cal.getNota() < 14) {
+             String estado;
+                if (cal.getNota() > 14) {
                     estado = "APROBADO";
                 } else {
                     estado = "REPROBADO";
                 }
+            if (cal.getEstudianteCal().getUsuarioEst().equals(userEstudiante)) {
                 Object[] fila = {cal.getEstudianteCal().getNombreP(), cal.getProfesorCal().getEspecialidadProf(), cal.getNota(), estado};
                 modeloTabla.addRow(fila);
             }
@@ -123,15 +123,13 @@ public class EstudianteInterfaz extends javax.swing.JDialog {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTUserEst = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableCalificaciones = new javax.swing.JTable();
+        jLCodigoEst = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setText("CALIFICACIONES DE ESTUDIANTE");
-
-        jTUserEst.setEditable(false);
+        jLabel1.setText("CALIFICACIONES DE ESTUDIANTE: ");
 
         jTableCalificaciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -160,33 +158,38 @@ public class EstudianteInterfaz extends javax.swing.JDialog {
             }
         });
         jTableCalificaciones.setRowSelectionAllowed(false);
+        jTableCalificaciones.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTableCalificaciones);
+
+        jLCodigoEst.setText("////////");
+        jLCodigoEst.setToolTipText("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(177, 177, 177)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTUserEst, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(48, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46))
+                .addContainerGap(51, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLCodigoEst, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(134, 134, 134))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(43, 43, 43))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(jLabel1)
+                .addGap(58, 58, 58)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLCodigoEst, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35)
-                .addComponent(jTUserEst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(67, Short.MAX_VALUE))
         );
 
         pack();
@@ -304,9 +307,9 @@ public class EstudianteInterfaz extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLCodigoEst;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTUserEst;
     private javax.swing.JTable jTableCalificaciones;
     // End of variables declaration//GEN-END:variables
 }

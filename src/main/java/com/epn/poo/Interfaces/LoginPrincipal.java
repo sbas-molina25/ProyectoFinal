@@ -5,8 +5,11 @@
 package com.epn.poo.Interfaces;
 
 import com.epn.poo.ClasesAdministracionColegio.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.*;
 import java.util.logging.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,14 +17,15 @@ import java.util.logging.*;
  */
 public class LoginPrincipal extends javax.swing.JFrame {
 
-    ArrayList<Estudiante> listaEstudiante = new ArrayList<>();
-    ArrayList<Profesor> listaProfesores = new ArrayList<>();
-    ArrayList<Curso> listaCursos = new ArrayList<>();
+    String idAdmin = "ADM100";
+    String passwordAdmin = "admin1234";
+
     /**
      * Creates new form LoginPrincipal
      */
     public LoginPrincipal() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -37,6 +41,8 @@ public class LoginPrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jTUsuario = new javax.swing.JTextField();
         jTContrasena = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,46 +53,56 @@ public class LoginPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setBackground(new java.awt.Color(255, 153, 153));
-        jLabel1.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("LOGIN");
+        jLabel1.setText("SISTEMA DE ADMINISTRACION DE COLEGIO");
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         jLabel1.setOpaque(true);
 
-        jTUsuario.setText("Usuario");
+        jLabel2.setText("Usuario: ");
 
-        jTContrasena.setText("Contraseña");
+        jLabel3.setText("Contraseña:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(109, 109, 109)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jBLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(100, 100, 100))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(151, 151, 151))
+                .addContainerGap(45, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(58, 58, 58))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(105, 105, 105)
+                .addComponent(jBLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(jLabel1)
                 .addGap(34, 34, 34)
-                .addComponent(jTUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel1)
+                .addGap(42, 42, 42)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addComponent(jBLogin)
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(26, 26, 26)
+                .addComponent(jBLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         pack();
@@ -96,15 +112,17 @@ public class LoginPrincipal extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             String usuarioVerificar = jTUsuario.getText().substring(0, 3).toUpperCase();
-            String userCompleto = jTUsuario.getText().toUpperCase();
+            String userCompleto = jTUsuario.getText().trim().toUpperCase();
+            String contrasena = jTContrasena.getText();
+            if (!comprobarContrasena(userCompleto, contrasena)) {
+                JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
+                return;
+            }
             switch (usuarioVerificar) {
                 case "ADM":
                     AdministradorInterfaz ventanaAdmin = new AdministradorInterfaz(this, true);
                     ventanaAdmin.setLocationRelativeTo(null);
                     ventanaAdmin.setVisible(true);
-                    this.listaEstudiante = ventanaAdmin.getListaEstudianteCreada();
-                    this.listaProfesores = ventanaAdmin.getListaProfesorCreada();
-                    this.listaCursos = ventanaAdmin.getListaCursoCreado();
                     break;
                 case "EST":
                     EstudianteInterfaz ventanaEstudiante = new EstudianteInterfaz(this, userCompleto, true);
@@ -124,6 +142,77 @@ public class LoginPrincipal extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jBLoginActionPerformed
+
+    public boolean comprobarContrasena(String usuario, String contrasena) {
+        ArrayList<Estudiante> listaEstudiantes = cargarEstudiantesDesdeArchivo("archivos/registrosEstudiante");
+        ArrayList<Profesor> listaProfes = cargarProfesoresDesdeArchivo("archivos/registrosProfesor");
+        String usuarioVerificar = jTUsuario.getText().substring(0, 3).toUpperCase();
+        if (usuarioVerificar.equals("EST")) {
+            for (Estudiante e : listaEstudiantes) {
+                if (e.getUsuarioEst().equals(usuario) && e.getContrasenaEst().equals(contrasena)) {
+                    return true;
+                }
+            }
+        } else if (usuarioVerificar.equals("PRF")) {
+            for (Profesor p : listaProfes) {
+                if (p.getUsuarioProf().equals(usuario) && p.getContrasenaProf().equals(contrasena)) {
+                    return true;
+                }
+            }
+        } else if (usuarioVerificar.equals("ADM")) {
+            if (usuario.equals(idAdmin) && contrasena.equals(passwordAdmin)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<Estudiante> cargarEstudiantesDesdeArchivo(String ruta) {
+        ArrayList<Estudiante> lista = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) { //Abre el archivo seleccionado
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split(";"); //Pone en un arreglo los diferentes datos del archivo, para verificarlos o settearlos
+                if (partes.length == 6) {
+                    Estudiante est = new Estudiante();
+                    est.setUsuarioEst(partes[0]);
+                    est.setContrasenaEst(partes[1]);
+                    est.setNombreP(partes[2]);
+                    est.setCedulaP(partes[3]);
+                    est.setEdadP(Integer.parseInt(partes[4]));
+                    est.setTelefonoP(partes[5]);
+                    lista.add(est); //Agrega el objeto creado en una lista, para retornarla
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar estudiante: " + e.getMessage());
+        }
+        return lista;
+    }
+
+    public ArrayList<Profesor> cargarProfesoresDesdeArchivo(String ruta) {
+        ArrayList<Profesor> lista = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split(";");
+                if (partes.length == 7) {
+                    Profesor prof = new Profesor();
+                    prof.setUsuarioProf(partes[0]);
+                    prof.setContrasenaProf(partes[1]);
+                    prof.setNombreP(partes[2]);
+                    prof.setEdadP(Integer.parseInt(partes[3]));
+                    prof.setCedulaP(partes[4]);
+                    prof.setTelefonoP(partes[5]);
+                    prof.setEspecialidadProf(partes[6]);
+                    lista.add(prof);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar profesor: " + e.getMessage());
+        }
+        return lista;
+    }
 
     /**
      * @param args the command line arguments
@@ -164,6 +253,8 @@ public class LoginPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBLogin;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField jTContrasena;
     private javax.swing.JTextField jTUsuario;
     // End of variables declaration//GEN-END:variables

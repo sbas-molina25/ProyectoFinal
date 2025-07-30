@@ -4,18 +4,10 @@
  */
 package com.epn.poo.Interfaces;
 
-import com.epn.poo.ClasesAdministracionColegio.Calificaciones;
-import com.epn.poo.ClasesAdministracionColegio.Curso;
-import com.epn.poo.ClasesAdministracionColegio.Estudiante;
-import com.epn.poo.ClasesAdministracionColegio.Profesor;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
+import com.epn.poo.ClasesAdministracionColegio.*;
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -50,49 +42,6 @@ public class ProfesorInterfaz extends javax.swing.JDialog {
         initComponents();
         settearMateriasEnCB();
 
-    }
-
-    public void settearMateriasEnCB() {
-        nombreCursosPorProf = new DefaultComboBoxModel<>();
-        nombreCursosPorProf.addElement("Seleccione una opcion...");
-        ArrayList<String> idYNombreCursos = new ArrayList<>();
-        for (Curso c : listaCursos) {
-            for (Profesor p : c.getListaProfesores()) {
-                if (p.getUsuarioProf().equals(userProfesor)) {
-                    idYNombreCursos.add(c.getIdCurso() + "-" + c.getNombreCurso());
-                }
-            }
-        }
-        for (String s : idYNombreCursos) {
-            nombreCursosPorProf.addElement(s);
-        }
-        jCBCursosPorProf.setModel(nombreCursosPorProf);
-    }
-
-    public void cargarDatosEstudiantePorCursoEnTabla() {
-        modeloTabla = (DefaultTableModel) jTablaEstudiantePorCursoSeleccionado.getModel();
-        modeloTabla.setRowCount(0);
-
-        for (Curso c : listaCursos) {
-            if (c.getIdCurso().equals(getIdCursoSeleccionado())) {
-                for (Profesor p : c.getListaProfesores()) {
-                    if (p.getUsuarioProf().equals(userProfesor)) {
-                        for (Estudiante e : c.getListaEstudiantes()) {
-                            Object[] fila = {e.getUsuarioEst(), e.getNombreP()};
-                            modeloTabla.addRow(fila);
-                        }
-                    }
-                }
-            }
-
-        }
-        jTablaEstudiantePorCursoSeleccionado.setModel(modeloTabla);
-    }
-
-    public String getIdCursoSeleccionado() {
-        String jcbSeleccion = (String) jCBCursosPorProf.getSelectedItem();
-        String[] partes = jcbSeleccion.split("-");
-        return partes[0];
     }
 
     /**
@@ -147,6 +96,7 @@ public class ProfesorInterfaz extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        jTablaEstudiantePorCursoSeleccionado.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTablaEstudiantePorCursoSeleccionado);
 
         jBAsignarNota.setText("ASIGNAR NOTA");
@@ -163,49 +113,45 @@ public class ProfesorInterfaz extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(71, 71, 71)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(168, 168, 168)
-                        .addComponent(jLabel1))
+                        .addGap(69, 69, 69)
+                        .addComponent(jLabel3))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(131, 131, 131)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(jCBCursosPorProf, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(113, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jCBCursosPorProf, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
                         .addComponent(jTNotaCalificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jBAsignarNota)
-                        .addGap(139, 139, 139))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(129, 129, 129))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(192, 192, 192))))
+                        .addComponent(jBAsignarNota)))
+                .addGap(0, 71, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(121, 121, 121))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(39, 39, 39)
                 .addComponent(jLabel1)
-                .addGap(34, 34, 34)
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCBCursosPorProf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addGap(38, 38, 38)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBAsignarNota)
                     .addComponent(jTNotaCalificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         pack();
@@ -221,14 +167,17 @@ public class ProfesorInterfaz extends javax.swing.JDialog {
 
     private void jBAsignarNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAsignarNotaActionPerformed
         // TODO add your handling code here:
+        calificacionG.setCodigoCal(calificacionG.cambiarUsuario());
         calificacionG.setEstudianteCal(getEstudianteSeleccionado(listaEstudiante));
         calificacionG.setProfesorCal(getProfesorSeleccionado(listaProfesores));
         calificacionG.setNota(Double.parseDouble(jTNotaCalificacion.getText()));
         agregarCalificacion(calificacionG);
         guardarCalificacionEnArchivo("archivos/registrosCalificacion", listaCalificaciones);
         JOptionPane.showMessageDialog(null, "Nota asignada");
-        jTablaEstudiantePorCursoSeleccionado.clearSelection();
+        modeloTabla.removeRow(jTablaEstudiantePorCursoSeleccionado.getSelectedRow()); // Eliminar del jtable al estudiante seleccionado, para no seleccionarlo dos veces
+        jTablaEstudiantePorCursoSeleccionado.clearSelection(); //Quita la seleccion anterior
         jTNotaCalificacion.setText("");
+        calificacionG = new Calificaciones();
     }//GEN-LAST:event_jBAsignarNotaActionPerformed
 
     public void agregarCalificacion(Calificaciones nuevaCal) {
@@ -240,7 +189,7 @@ public class ProfesorInterfaz extends javax.swing.JDialog {
         }
         listaCalificaciones.add(nuevaCal);
     }
-    
+
     public ArrayList<Estudiante> cargarEstudiantesDesdeArchivo(String ruta) {
         ArrayList<Estudiante> lista = new ArrayList<>();
         boolean repetido = false;
@@ -432,6 +381,49 @@ public class ProfesorInterfaz extends javax.swing.JDialog {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al guardar el calificacion: " + e.getMessage());
         }
+    }
+
+    public void settearMateriasEnCB() {
+        nombreCursosPorProf = new DefaultComboBoxModel<>();
+        nombreCursosPorProf.addElement("Seleccione una opcion...");
+        ArrayList<String> idYNombreCursos = new ArrayList<>();
+        for (Curso c : listaCursos) {
+            for (Profesor p : c.getListaProfesores()) {
+                if (p.getUsuarioProf().equals(userProfesor)) {
+                    idYNombreCursos.add(c.getIdCurso() + "-" + c.getNombreCurso());
+                }
+            }
+        }
+        for (String s : idYNombreCursos) {
+            nombreCursosPorProf.addElement(s);
+        }
+        jCBCursosPorProf.setModel(nombreCursosPorProf);
+    }
+
+    public void cargarDatosEstudiantePorCursoEnTabla() {
+        modeloTabla = (DefaultTableModel) jTablaEstudiantePorCursoSeleccionado.getModel();
+        modeloTabla.setRowCount(0);
+
+        for (Curso c : listaCursos) {
+            if (c.getIdCurso().equals(getIdCursoSeleccionado())) {
+                for (Profesor p : c.getListaProfesores()) {
+                    if (p.getUsuarioProf().equals(userProfesor)) {
+                        for (Estudiante e : c.getListaEstudiantes()) {
+                            Object[] fila = {e.getUsuarioEst(), e.getNombreP()};
+                            modeloTabla.addRow(fila);
+                        }
+                    }
+                }
+            }
+
+        }
+        jTablaEstudiantePorCursoSeleccionado.setModel(modeloTabla);
+    }
+
+    public String getIdCursoSeleccionado() {
+        String jcbSeleccion = (String) jCBCursosPorProf.getSelectedItem();
+        String[] partes = jcbSeleccion.split("-");
+        return partes[0];
     }
 
     /**
